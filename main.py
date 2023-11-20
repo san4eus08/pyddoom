@@ -1,1 +1,1 @@
-print("ya dobriy")
+print("ty chto delaesh???")
