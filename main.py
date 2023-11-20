@@ -1,1 +1,1 @@
-print("yura molodeц")
+print("ty chto delaesh???")
