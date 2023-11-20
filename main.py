@@ -1,1 +1,1 @@
-print("San4o hueplyt" )
+print("idi nahren chert")
