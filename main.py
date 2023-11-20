@@ -1,1 +1,1 @@
-print("yura oluh")
+print("yura molodets")
