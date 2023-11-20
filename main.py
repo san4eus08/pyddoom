@@ -1,1 +1,1 @@
-print("idi nahren chert")
+print("ya dobriy")
