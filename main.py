@@ -1,1 +1,1 @@
-print("yura molodets")
+print("yura molodeц")
