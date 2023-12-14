@@ -1,0 +1,14 @@
+Index: main.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>print(\"ty chto delaesh???\")\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/main.py b/main.py
+--- a/main.py	(revision 6c08fb7a1a520fff9f0a9a625bb5d548766cbd94)
++++ b/main.py	(date 1702499358595)
+@@ -1,1 +1,2 @@
+-print("ty chto delaesh???")
++import pygame
++
