@@ -1,6 +1,6 @@
 import math
 
-import  sys
+import sys
 
 import os
 import pygame
@@ -12,8 +12,8 @@ from rc import *
 def start_screen():
     fon = pygame.transform.scale(load_image('lobby.jpg'), (WIDTH, HEIGHT))
     screen.blit(fon, (0, 0))
-    button = get_component_button(WIDTH // 2, HEIGHT // 2 - 140,'ИГРАТЬ')
-    button1 = get_component_button(WIDTH // 2, HEIGHT // 2 - 70,'УРОВНИ')
+    button = get_component_button(WIDTH // 2, HEIGHT // 2 - 140, 'ИГРАТЬ')
+    button1 = get_component_button(WIDTH // 2, HEIGHT // 2 - 70, 'УРОВНИ')
     button2 = get_component_button(WIDTH // 2, HEIGHT // 2, 'ОРУЖИЕ')
     button3 = get_component_button(WIDTH // 2, HEIGHT // 2 + 70, 'НАСТРОЙКИ')
     color = (162, 65, 47)
@@ -42,7 +42,16 @@ def start_screen():
                     mouse_pos = pygame.mouse.get_pos()
                     if button1[2].collidepoint(mouse_pos):
                         pygame.quit()
+                if e.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if button3[2].collidepoint(mouse_pos):
+                        sattings()
         pygame.display.flip()
+
+
+def sattings():
+    fon = pygame.transform.scale(load_image('sattings.jpeg'), (WIDTH, HEIGHT))
+    screen.blit(fon, (0, 0))
 
 
 def load_image(name, colorkey=None):
