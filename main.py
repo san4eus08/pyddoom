@@ -50,8 +50,56 @@ def start_screen():
 
 
 def sattings():
-    fon = pygame.transform.scale(load_image('sattings.jpeg'), (WIDTH, HEIGHT))
+    fon = pygame.transform.scale(load_image('settings.jpeg'), (WIDTH, HEIGHT))
     screen.blit(fon, (0, 0))
+    font = pygame.font.SysFont("Verdana", 20)
+    button = get_component_button(WIDTH // 2, HEIGHT // 2 - 200, 'РАЗРЕШЕНИИЕ')
+    button1 = get_component_button(WIDTH // 2, HEIGHT // 2 - 100, 'МАКС FPS')
+    button2 = get_component_button(WIDTH // 2, HEIGHT // 2, 'УГОЛ ОБЗОРА')
+    button3 = get_component_button(WIDTH // 2, HEIGHT // 2 + 100, 'ЗВУК')
+    color = (162, 65, 47)
+    pygame.draw.rect(screen, color, button[2])
+    screen.blit(button[0], button[1])
+
+    pygame.draw.rect(screen, color, button1[2])
+    screen.blit(button1[0], button1[1])
+
+    pygame.draw.rect(screen, color, button2[2])
+    screen.blit(button2[0], button2[1])
+
+    pygame.draw.rect(screen, color, button3[2])
+    screen.blit(button3[0], button3[1])
+
+    while True:
+        resolution = font.render(f'{WIDTH}/{HEIGHT}', True, (255, 255, 255))
+        screen.blit(resolution, (button[2].width, button[2].height - 20))
+        resolution = font.render(f'{FPS}', True, (255, 255, 255))
+        screen.blit(resolution, (button[2].width, button[2].height - 120))
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                pygame.quit()
+            elif e.type == pygame.MOUSEBUTTONDOWN:
+                if e.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    button[2].w = button[2].w // 2
+                    if button[2].collidepoint(mouse_pos):
+                        pass
+                if e.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    button[2].width = button[2].width + button[2].w
+                    if button[2].collidepoint(mouse_pos):
+                        pass
+                if e.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    button1[2].w = button1[2].w // 2
+                    if button1[2].collidepoint(mouse_pos):
+                        FPS -= 15
+                if e.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    button1[2].width = button1[2].width + button[2].w
+                    if button1[2].collidepoint(mouse_pos):
+                        FPS += 15
+        pygame.display.flip()
 
 
 def load_image(name, colorkey=None):
@@ -61,6 +109,7 @@ def load_image(name, colorkey=None):
         sys.exit()
     image = pygame.image.load(fullname)
     return image
+
 
 def get_component_button(button_x, button_y, text):
     font = pygame.font.Font(None, 50)
