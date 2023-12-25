@@ -4,7 +4,10 @@ import sys
 
 import os
 import pygame
+
+import settings
 from settings import *
+from settings import FPS
 from player import Player
 from rc import *
 
@@ -57,6 +60,7 @@ def sattings():
     button1 = get_component_button(WIDTH // 2, HEIGHT // 2 - 100, 'МАКС FPS')
     button2 = get_component_button(WIDTH // 2, HEIGHT // 2, 'УГОЛ ОБЗОРА')
     button3 = get_component_button(WIDTH // 2, HEIGHT // 2 + 100, 'ЗВУК')
+    button4 = get_component_button(WIDTH // 2, HEIGHT // 2 + 200, 'В МЕНЮ')
     color = (162, 65, 47)
     pygame.draw.rect(screen, color, button[2])
     screen.blit(button[0], button[1])
@@ -70,10 +74,13 @@ def sattings():
     pygame.draw.rect(screen, color, button3[2])
     screen.blit(button3[0], button3[1])
 
+    pygame.draw.rect(screen, color, button4[2])
+    screen.blit(button4[0], button4[1])
+
     while True:
         resolution = font.render(f'{WIDTH}/{HEIGHT}', True, (255, 255, 255))
         screen.blit(resolution, (button[2].width, button[2].height - 20))
-        resolution = font.render(f'{FPS}', True, (255, 255, 255))
+        resolution = font.render(f'{settings.FPS}', True, (255, 255, 255))
         screen.blit(resolution, (button[2].width, button[2].height - 120))
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
@@ -93,12 +100,20 @@ def sattings():
                     mouse_pos = pygame.mouse.get_pos()
                     button1[2].w = button1[2].w // 2
                     if button1[2].collidepoint(mouse_pos):
-                        FPS -= 15
+                        settings.FPS -= 15
+                        print(settings.FPS)
                 if e.button == 1:
                     mouse_pos = pygame.mouse.get_pos()
                     button1[2].width = button1[2].width + button[2].w
                     if button1[2].collidepoint(mouse_pos):
-                        FPS += 15
+                        settings.FPS += 15
+                        print(settings.FPS)
+                if e.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if button4[2].collidepoint(mouse_pos):
+                        start_screen()
+                        return
+
         pygame.display.flip()
 
 
