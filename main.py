@@ -7,6 +7,7 @@ import pygame
 from settings import *
 from player import Player
 from rc import *
+from drawing import Drawing
 
 
 def start_screen():
@@ -45,11 +46,11 @@ def start_screen():
                 if e.button == 1:
                     mouse_pos = pygame.mouse.get_pos()
                     if button3[2].collidepoint(mouse_pos):
-                        sattings()
+                        settings()
         pygame.display.flip()
 
 
-def sattings():
+def settings():
     fon = pygame.transform.scale(load_image('sattings.jpeg'), (WIDTH, HEIGHT))
     screen.blit(fon, (0, 0))
 
@@ -61,6 +62,7 @@ def load_image(name, colorkey=None):
         sys.exit()
     image = pygame.image.load(fullname)
     return image
+
 
 def get_component_button(button_x, button_y, text):
     font = pygame.font.Font(None, 50)
@@ -80,6 +82,7 @@ pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 player = Player()
+drawing = Drawing(screen)
 start_screen()
 while True:
     for e in pygame.event.get():
@@ -91,7 +94,10 @@ while True:
     pygame.draw.rect(screen, BLUE, (0, 0, WIDTH, (HEIGHT // 2)))
     pygame.draw.rect(screen, GRAY, (0, (HEIGHT // 2), WIDTH, (HEIGHT // 2)))
 
-    ray_casting(screen, player.pos, player.angle)
+    drawing.draw_background()
+
+    drawing.draw_space(player.pos, player.angle)
+
     clock.tick(FPS)
     print(clock.get_fps())
 

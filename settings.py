@@ -1,22 +1,26 @@
 # константы настроек
 import math
 
-WIDTH = 800
-HEIGHT = 600
+WIDTH = 1500
+HEIGHT = 1000
 
 ANGLE = 0.05
 
-FPS = 15
+FPS = 60
 
-TILE = 53.3
-FOV = 0.8
-NRAYS = 80
+TILE = 100
+FOV = math.pi / 3
+NRAYS = 300
 DELTA_ANGLE = FOV/NRAYS
-MAX_DEPTH = 600
+MAX_DEPTH = 1200
 
 DIST = NRAYS / (2 * math.tan(FOV/2))
-PROJ_COEFF = 3.5 * DIST * TILE
+PROJ_COEFF = 4 * DIST * TILE
 SCALE = WIDTH // NRAYS
+
+# текстуры
+TEXTURE_W, TEXTURE_H = WIDTH, HEIGHT
+TEXTURE_SCALE = WIDTH // TILE
 
 # настройки игрока
 player_pos = (WIDTH//2, HEIGHT//2)
@@ -33,20 +37,23 @@ GRAY = (125, 125, 125)
 
 # карта
 text_map = [
-    'XXXXXXXXXXXXXXX',
-    'X.............X',
-    'X.............X',
-    'X.............X',
-    'X.............X',
-    'X.............X',
-    'X.............X',
-    'X.............X',
-    'X.............X',
-    'X.............X',
-    'XXXXXXXXXXXXXXX'
+    '111111111111111',
+    '1.............1',
+    '1.............1',
+    '1...22........1',
+    '1...22........1',
+    '1.............1',
+    '1.............1',
+    '1.............1',
+    '1.............1',
+    '1.............1',
+    '111111111111111'
 ]
-world_map = set()
+
+world_map = {}
 for i, row in enumerate(text_map):
     for j, char in enumerate(row):
-        if char == "X":
-            world_map.add((j * TILE, i * TILE))
+        if char == "1":
+            world_map[(j * TILE, i * TILE)] = '1'
+        elif char == "2":
+            world_map[(j * TILE, i * TILE)] = '2'
