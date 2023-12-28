@@ -53,13 +53,11 @@ def start_screen():
 
 
 def sattings():
-    fon = pygame.transform.scale(load_image('settings.jpeg'), (WIDTH, HEIGHT))
-    screen.blit(fon, (0, 0))
     font = pygame.font.SysFont("Verdana", 20)
-    button = get_component_button(WIDTH // 2, HEIGHT // 2 - 200, 'РАЗРЕШЕНИИЕ')
-    button1 = get_component_button(WIDTH // 2, HEIGHT // 2 - 100, 'МАКС FPS')
-    button2 = get_component_button(WIDTH // 2, HEIGHT // 2, 'УГОЛ ОБЗОРА')
-    button3 = get_component_button(WIDTH // 2, HEIGHT // 2 + 100, 'ЗВУК')
+    button = get_component_button(WIDTH // 2, HEIGHT // 2 - 200, '<ПОЛН. ЭКРАН.>')
+    button1 = get_component_button(WIDTH // 2, HEIGHT // 2 - 100, '<МАКС FPS>')
+    button2 = get_component_button(WIDTH // 2, HEIGHT // 2, '<УГОЛ ОБЗОРА>')
+    button3 = get_component_button(WIDTH // 2, HEIGHT // 2 + 100, '<ЗВУК>')
     button4 = get_component_button(WIDTH // 2, HEIGHT // 2 + 200, 'В МЕНЮ')
     color = (162, 65, 47)
     pygame.draw.rect(screen, color, button[2])
@@ -78,36 +76,51 @@ def sattings():
     screen.blit(button4[0], button4[1])
 
     while True:
+        screen.fill((0, 0, 0))
+        fon = pygame.transform.scale(load_image('settings.jpeg'), (WIDTH, HEIGHT))
+        screen.blit(fon, (0, 0))
+
+        pygame.draw.rect(screen, color, button[2])
+        screen.blit(button[0], button[1])
+
+        pygame.draw.rect(screen, color, button1[2])
+        screen.blit(button1[0], button1[1])
+
+        pygame.draw.rect(screen, color, button2[2])
+        screen.blit(button2[0], button2[1])
+
+        pygame.draw.rect(screen, color, button3[2])
+        screen.blit(button3[0], button3[1])
+
+        pygame.draw.rect(screen, color, button4[2])
+        screen.blit(button4[0], button4[1])
+
         resolution = font.render(f'{WIDTH}/{HEIGHT}', True, (255, 255, 255))
         screen.blit(resolution, (button[2].width, button[2].height - 20))
-        resolution = font.render(f'{settings.FPS}', True, (255, 255, 255))
-        screen.blit(resolution, (button[2].width, button[2].height - 120))
+
+        fps = font.render(f'{settings.FPS}', True, (255, 255, 255))
+        screen.blit(fps, (button1[2].width, button1[2].height + 80))
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 pygame.quit()
             elif e.type == pygame.MOUSEBUTTONDOWN:
                 if e.button == 1:
                     mouse_pos = pygame.mouse.get_pos()
-                    button[2].w = button[2].w // 2
-                    if button[2].collidepoint(mouse_pos):
+                    if button[3].collidepoint(mouse_pos):
                         pass
                 if e.button == 1:
                     mouse_pos = pygame.mouse.get_pos()
-                    button[2].width = button[2].width + button[2].w
-                    if button[2].collidepoint(mouse_pos):
+                    if button[4].collidepoint(mouse_pos):
                         pass
                 if e.button == 1:
                     mouse_pos = pygame.mouse.get_pos()
-                    button1[2].w = button1[2].w // 2
-                    if button1[2].collidepoint(mouse_pos):
-                        settings.FPS -= 15
-                        print(settings.FPS)
+                    if button1[3].collidepoint(mouse_pos):
+                        if settings.FPS > 15:
+                            settings.FPS -= 15
                 if e.button == 1:
                     mouse_pos = pygame.mouse.get_pos()
-                    button1[2].width = button1[2].width + button[2].w
-                    if button1[2].collidepoint(mouse_pos):
+                    if button1[4].collidepoint(mouse_pos):
                         settings.FPS += 15
-                        print(settings.FPS)
                 if e.button == 1:
                     mouse_pos = pygame.mouse.get_pos()
                     if button4[2].collidepoint(mouse_pos):
@@ -134,10 +147,14 @@ def get_component_button(button_x, button_y, text):
     button_height = 60
 
     button_rect = pygame.Rect(button_x - button_width // 2, button_y - button_height // 2, button_width, button_height)
+    button_up_rect = pygame.Rect(button_x - button_width // 2, button_y - button_height // 2, button_width // 2,
+                                 button_height)
+    button_down_rect = pygame.Rect(button_x, button_y - button_height // 2, button_width // 2,
+                                   button_height)
 
     text_rect = text_surface.get_rect(center=button_rect.center)
 
-    return text_surface, text_rect, button_rect
+    return text_surface, text_rect, button_rect, button_up_rect, button_down_rect
 
 
 pygame.init()
