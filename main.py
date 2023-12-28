@@ -1,13 +1,16 @@
 import math
+from drawing import Drawing
 
 import sys
 
 import os
 import pygame
+
+import settings
 from settings import *
+from settings import FPS
 from player import Player
 from rc import *
-from drawing import Drawing
 
 
 def start_screen():
@@ -46,13 +49,86 @@ def start_screen():
                 if e.button == 1:
                     mouse_pos = pygame.mouse.get_pos()
                     if button3[2].collidepoint(mouse_pos):
-                        settings()
+                        sattings()
         pygame.display.flip()
 
 
-def settings():
-    fon = pygame.transform.scale(load_image('sattings.jpeg'), (WIDTH, HEIGHT))
-    screen.blit(fon, (0, 0))
+def sattings():
+    font = pygame.font.SysFont("Verdana", 50)
+    button = get_component_button(WIDTH // 2 - 150, HEIGHT // 2 - 200, '<ПОЛН. ЭКРАН.>')
+    button1 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2 - 100, '<МАКС FPS>')
+    button2 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2, '<УГОЛ ОБЗОРА>')
+    button3 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2 + 100, '<ЗВУК>')
+    button4 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2 + 200, 'В МЕНЮ')
+    color = (162, 65, 47)
+    pygame.draw.rect(screen, color, button[2])
+    screen.blit(button[0], button[1])
+
+    pygame.draw.rect(screen, color, button1[2])
+    screen.blit(button1[0], button1[1])
+
+    pygame.draw.rect(screen, color, button2[2])
+    screen.blit(button2[0], button2[1])
+
+    pygame.draw.rect(screen, color, button3[2])
+    screen.blit(button3[0], button3[1])
+
+    pygame.draw.rect(screen, color, button4[2])
+    screen.blit(button4[0], button4[1])
+
+    while True:
+        screen.fill((0, 0, 0))
+        fon = pygame.transform.scale(load_image('settings.jpeg'), (WIDTH, HEIGHT))
+        screen.blit(fon, (0, 0))
+
+        pygame.draw.rect(screen, color, button[2])
+        screen.blit(button[0], button[1])
+
+        pygame.draw.rect(screen, color, button1[2])
+        screen.blit(button1[0], button1[1])
+
+        pygame.draw.rect(screen, color, button2[2])
+        screen.blit(button2[0], button2[1])
+
+        pygame.draw.rect(screen, color, button3[2])
+        screen.blit(button3[0], button3[1])
+
+        pygame.draw.rect(screen, color, button4[2])
+        screen.blit(button4[0], button4[1])
+
+        resolution = font.render(f'{WIDTH}/{HEIGHT}', True, (255, 255, 255))
+        screen.blit(resolution, (button[2].width + 200, button[2].height))
+
+        fps = font.render(f'{settings.FPS}', True, (255, 255, 255))
+        screen.blit(fps, (button1[2].w + 200, button1[2].h + 100))
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                pygame.quit()
+            elif e.type == pygame.MOUSEBUTTONDOWN:
+                if e.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if button[3].collidepoint(mouse_pos):
+                        pass
+                if e.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if button[4].collidepoint(mouse_pos):
+                        pass
+                if e.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if button1[3].collidepoint(mouse_pos):
+                        if settings.FPS > 15:
+                            settings.FPS -= 15
+                if e.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if button1[4].collidepoint(mouse_pos):
+                        settings.FPS += 15
+                if e.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if button4[2].collidepoint(mouse_pos):
+                        start_screen()
+                        return
+
+        pygame.display.flip()
 
 
 def load_image(name, colorkey=None):
@@ -72,18 +148,22 @@ def get_component_button(button_x, button_y, text):
     button_height = 60
 
     button_rect = pygame.Rect(button_x - button_width // 2, button_y - button_height // 2, button_width, button_height)
+    button_up_rect = pygame.Rect(button_x - button_width // 2, button_y - button_height // 2, button_width // 2,
+                                 button_height)
+    button_down_rect = pygame.Rect(button_x, button_y - button_height // 2, button_width // 2,
+                                   button_height)
 
     text_rect = text_surface.get_rect(center=button_rect.center)
 
-    return text_surface, text_rect, button_rect
+    return text_surface, text_rect, button_rect, button_up_rect, button_down_rect
 
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 player = Player()
-drawing = Drawing(screen)
 start_screen()
+drawing = Drawing(screen)
 while True:
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
@@ -98,7 +178,7 @@ while True:
 
     drawing.draw_space(player.pos, player.angle)
 
-    clock.tick(FPS)
+    clock.tick(settings.FPS)
     print(clock.get_fps())
 
     # pygame.draw.circle(screen, GREEN, (int(player.x), int(player.y)), 10)
