@@ -22,6 +22,10 @@ SCALE = WIDTH // NRAYS
 TEXTURE_W, TEXTURE_H = WIDTH, HEIGHT
 TEXTURE_SCALE = WIDTH // TILE
 
+# спрайты(вкусно)
+D_PI = math.pi * 2
+C_RAY = NRAYS // 2 - 1
+
 # настройки игрока
 player_pos = (WIDTH//2, HEIGHT//2)
 player_angle = 0
