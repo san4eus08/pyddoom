@@ -6,7 +6,7 @@ def mapping(a, b):
     return (a // TILE) * TILE, (b // TILE) * TILE
 
 
-def ray_casting(screen, player_pos, player_angle, textures):
+def ray_casting(player, textures):
     # cur_angle = player_angle - (FOV / 2)
     # xo, yo = player_pos
     #
@@ -24,9 +24,11 @@ def ray_casting(screen, player_pos, player_angle, textures):
     #             break
     #     cur_angle += DELTA_ANGLE
 
-    ox, oy = player_pos
+    walls = []
+
+    ox, oy = player.pos
     xm, ym = mapping(ox, oy)
-    cur_angle = player_angle - (FOV / 2)
+    cur_angle = player.angle - (FOV / 2)
     depth_v = 0
     depth_h = 0
     for ray in range(NRAYS):
@@ -66,13 +68,18 @@ def ray_casting(screen, player_pos, player_angle, textures):
             y += dy * TILE
 
         depth, offset, texture = (depth_v, yv, texture_v) if depth_v < depth_h else (depth_h, xh, texture_h)
-        depth *= math.cos(player_angle - cur_angle)
+        depth *= math.cos(player.angle - cur_angle)
         offset = int(offset) % TILE
         depth = max(depth, 0.0000000000001)
         proj_h = min(int(PROJ_COEFF / depth), 2 * HEIGHT)
         # это покраска одной части стены
         wall_c = textures[texture].subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE, TEXTURE_H)
         wall_c = pygame.transform.scale(wall_c, (SCALE, proj_h))
-        screen.blit(wall_c, (ray * SCALE, (HEIGHT//2) - proj_h // 2))
+
+        wall_pos = (ray * SCALE, (HEIGHT//2) - proj_h // 2)
+
+        walls.append((depth, wall_c, wall_pos))
 
         cur_angle += DELTA_ANGLE
+
+    return walls

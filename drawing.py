@@ -13,5 +13,8 @@ class Drawing:
         pygame.draw.rect(self.sc, BLUE, (0, 0, WIDTH, (HEIGHT // 2)))
         pygame.draw.rect(self.sc, GRAY, (0, (HEIGHT // 2), WIDTH, (HEIGHT // 2)))
 
-    def draw_space(self, player_pos, player_angle):
-        ray_casting(self.sc, player_pos, player_angle, self.textures)
+    def draw_space(self, world_objects):
+        for obj in sorted(world_objects, key=lambda n: n[0], reverse=True):
+            if obj[0]:
+                _, object, object_pos = obj
+                self.sc.blit(object, object_pos)

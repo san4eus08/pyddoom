@@ -10,6 +10,7 @@ import settings
 from settings import *
 from settings import FPS
 from player import Player
+from sprites import *
 from rc import *
 
 
@@ -202,6 +203,7 @@ clock = pygame.time.Clock()
 player = Player()
 start_screen()
 drawing = Drawing(screen)
+sprites = Sprites()
 while True:
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
@@ -217,7 +219,8 @@ while True:
 
     drawing.draw_background()
 
-    drawing.draw_space(player.pos, player.angle)
+    walls = ray_casting(player, drawing.textures)
+    drawing.draw_space(walls + [obj.object_locate(player, walls) for obj in sprites.list_of_objects])
 
     clock.tick(settings.FPS)
     print(clock.get_fps())
