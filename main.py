@@ -104,6 +104,9 @@ def sattings():
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 pygame.quit()
+            elif e.type == pygame.KEYDOWN:
+                if pygame.key.get_pressed()[pygame.K_ESCAPE]:
+                    return
             elif e.type == pygame.MOUSEBUTTONDOWN:
                 if e.button == 1:
                     mouse_pos = pygame.mouse.get_pos()
@@ -128,6 +131,41 @@ def sattings():
                         start_screen()
                         return
 
+        pygame.display.flip()
+
+
+def pause():
+    screen.fill((86, 86, 86))
+    button = get_component_button(WIDTH // 2, HEIGHT // 2 - 70, 'ПРОДОЛЖИТЬ')
+    button1 = get_component_button(WIDTH // 2, HEIGHT // 2, 'НАСТРОЙКА')
+    button2 = get_component_button(WIDTH // 2, HEIGHT // 2 + 70, 'В МЕНЮ')
+    color = (162, 65, 47)
+    pygame.draw.rect(screen, color, button[2])
+    screen.blit(button[0], button[1])
+
+    pygame.draw.rect(screen, color, button1[2])
+    screen.blit(button1[0], button1[1])
+
+    pygame.draw.rect(screen, color, button2[2])
+    screen.blit(button2[0], button2[1])
+
+    while True:
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                pygame.quit()
+            elif e.type == pygame.MOUSEBUTTONDOWN:
+                if e.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if button[2].collidepoint(mouse_pos):
+                        return
+                if e.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if button1[2].collidepoint(mouse_pos):
+                        sattings()
+                if e.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if button2[2].collidepoint(mouse_pos):
+                        start_screen()
         pygame.display.flip()
 
 
@@ -168,6 +206,9 @@ while True:
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
             exit()
+        elif e.type == pygame.KEYDOWN:
+            if pygame.key.get_pressed()[pygame.K_ESCAPE]:
+                pause()
 
     screen.fill(BLACK)
     player.move()
