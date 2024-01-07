@@ -66,7 +66,7 @@ def sattings():
     font = pygame.font.SysFont("Verdana", 50)
     button = get_component_button(WIDTH // 2 - 150, HEIGHT // 2 - 200, '<ПОЛН. ЭКРАН.>')
     button1 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2 - 100, '<МАКС FPS>')
-    button2 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2, '<УГОЛ ОБЗОРА>')
+    button2 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2, '<ЧУВСТВ.>')
     button3 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2 + 100, '<ЗВУК>')
     button4 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2 + 200, 'В МЕНЮ')
     color = (162, 65, 47)
@@ -111,6 +111,9 @@ def sattings():
 
         fps = font.render(f'{settings.FPS}', True, (255, 255, 255))
         screen.blit(fps, (button1[2].x + 360, button1[2].y))
+
+        angle = font.render(f'{round(settings.ANGLE, 2) * 100}', True, (255, 255, 255))
+        screen.blit(angle, (button2[2].x + 360, button2[2].y))
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 pygame.quit()
