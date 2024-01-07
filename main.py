@@ -21,6 +21,7 @@ def start_screen():
     button1 = get_component_button(WIDTH // 2, HEIGHT // 2 - 70, 'УРОВНИ')
     button2 = get_component_button(WIDTH // 2, HEIGHT // 2, 'ОРУЖИЕ')
     button3 = get_component_button(WIDTH // 2, HEIGHT // 2 + 70, 'НАСТРОЙКИ')
+    button4 = get_component_button(WIDTH // 2, HEIGHT // 2 + 140, 'ВЫЙТИ')
     color = (162, 65, 47)
     pygame.draw.rect(screen, color, button[2])
     screen.blit(button[0], button[1])
@@ -33,6 +34,9 @@ def start_screen():
 
     pygame.draw.rect(screen, color, button3[2])
     screen.blit(button3[0], button3[1])
+
+    pygame.draw.rect(screen, color, button4[2])
+    screen.blit(button4[0], button4[1])
 
     while True:
         for e in pygame.event.get():
@@ -51,6 +55,10 @@ def start_screen():
                     mouse_pos = pygame.mouse.get_pos()
                     if button3[2].collidepoint(mouse_pos):
                         sattings()
+                if e.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if button4[2].collidepoint(mouse_pos):
+                        exit()
         pygame.display.flip()
 
 
@@ -76,6 +84,7 @@ def sattings():
 
     pygame.draw.rect(screen, color, button4[2])
     screen.blit(button4[0], button4[1])
+    print(button1[2].x, button1[2].y)
 
     while True:
         screen.fill((0, 0, 0))
@@ -98,10 +107,10 @@ def sattings():
         screen.blit(button4[0], button4[1])
 
         resolution = font.render(f'{WIDTH}/{HEIGHT}', True, (255, 255, 255))
-        screen.blit(resolution, (button[2].width + 200, button[2].height))
+        screen.blit(resolution, (button[2].x + 360, button[2].y))
 
         fps = font.render(f'{settings.FPS}', True, (255, 255, 255))
-        screen.blit(fps, (button1[2].w + 200, button1[2].h + 100))
+        screen.blit(fps, (button1[2].x + 360, button1[2].y))
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 pygame.quit()
@@ -128,6 +137,15 @@ def sattings():
                         settings.FPS += 15
                 if e.button == 1:
                     mouse_pos = pygame.mouse.get_pos()
+                    if button1[3].collidepoint(mouse_pos):
+                        if settings.ANGLE > 0.01:
+                            settings.ANGLE -= 0.01
+                if e.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if button2[4].collidepoint(mouse_pos):
+                        settings.ANGLE += 0.01
+                if e.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
                     if button4[2].collidepoint(mouse_pos):
                         start_screen()
                         return
@@ -138,7 +156,7 @@ def sattings():
 def pause():
     screen.fill((86, 86, 86))
     button = get_component_button(WIDTH // 2, HEIGHT // 2 - 70, 'ПРОДОЛЖИТЬ')
-    button1 = get_component_button(WIDTH // 2, HEIGHT // 2, 'НАСТРОЙКА')
+    button1 = get_component_button(WIDTH // 2, HEIGHT // 2, 'НАСТРОЙКИ')
     button2 = get_component_button(WIDTH // 2, HEIGHT // 2 + 70, 'В МЕНЮ')
     color = (162, 65, 47)
     pygame.draw.rect(screen, color, button[2])
