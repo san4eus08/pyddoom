@@ -10,7 +10,7 @@ class Sprites:
             'monster': pygame.image.load('textures/texture.png').convert_alpha()
         }
         self.list_of_objects = [
-            SpriteObject(self.sprites_types['monster'], True, (5, 5), 1, 0.4)
+            SpriteObject(self.sprites_types['monster'], True, (6, 6), 1, 0.4)
         ]
 
 
@@ -23,28 +23,41 @@ class SpriteObject:
         self.scale = scale
 
     def object_locate(self, player, walls):
+        fake_walls0 = [walls[0] for i in range(FAKE_RAYS)]
+        fake_walls1 = [walls[-1] for i in range(FAKE_RAYS)]
+        fake_walls = fake_walls0 + walls + fake_walls1
+
         dx, dy = self.x - player.x, self.y - player.y
-        # ура геометрия опять помогла
-        dist = math.sqrt(dx ** 2 + dy ** 2)
+        distance_to_sprite = math.sqrt(dx ** 2 + dy ** 2)
 
-        # дальше бога нет....
-        theta = math.atan2(dy, dy)
+        theta = math.atan2(dy, dx)
         gamma = theta - player.angle
-        if (dx > 0 and 180 <= math.degrees(player.angle) <= 360) or (dx < 0 and dy < 0):
-            gamma += D_PI
+        if dx > 0 and 180 <= math.degrees(player.angle) <= 360 or dx < 0 and dy < 0:
+            gamma += DOUBLE_PI
 
-        drays = int(gamma / DELTA_ANGLE)
-        curr_ray = C_RAY + drays
-        dist *= math.cos((FOV // 2) - curr_ray * DELTA_ANGLE)
+        delta_rays = int(gamma / DELTA_ANGLE)
+        current_ray = CENTER_RAY + delta_rays
+        distance_to_sprite *= math.cos(HALF_FOV - current_ray * DELTA_ANGLE)
 
-        if 0 <= curr_ray <= NRAYS - 1 and dist < walls[curr_ray][0]:
-            proj_height = int(PROJ_COEFF / dist * self.scale)
+        fake_ray = current_ray + FAKE_RAYS
+        if 0 <= fake_ray <= NRAYS - 1 + 2 * FAKE_RAYS and distance_to_sprite < fake_walls[fake_ray][0]:
+            proj_height = min(int(PROJ_COEFF / distance_to_sprite * self.scale), 2 * HEIGHT)
             half_proj_height = proj_height // 2
             shift = half_proj_height * self.shift
 
-            sprite_pos = (curr_ray * SCALE - half_proj_height, (HEIGHT // 2) - half_proj_height + shift)
-            sprite = pygame.transform.scale(self.object, (proj_height, proj_height))
+            if not self.static:
+                if theta < 0:
+                    theta += DOUBLE_PI
+                theta = 360 - int(math.degrees(theta))
 
-            return (dist, sprite, sprite_pos)
-        return (False, )
+                for angles in self.sprite_angles:
+                    if theta in angles:
+                        self.object = self.sprite_positions[angles]
+                        break
+
+            sprite_pos = (current_ray * SCALE - half_proj_height, HALF_HEIGHT - half_proj_height + shift)
+            sprite = pygame.transform.scale(self.object, (proj_height, proj_height))
+            return (distance_to_sprite, sprite, sprite_pos)
+        else:
+            return (False,)
 

@@ -7,41 +7,18 @@ def mapping(a, b):
 
 
 def ray_casting(player, textures):
-    # cur_angle = player_angle - (FOV / 2)
-    # xo, yo = player_pos
-    #
-    # for ray in range(NRAYS):
-    #     sin_a = math.sin(cur_angle)
-    #     cos_a = math.cos(cur_angle)
-    #     for depth in range(1, MAX_DEPTH + 1):
-    #         x = xo + depth * cos_a
-    #         y = yo + depth * sin_a
-    #         color = 255 / (1 + depth ** 2 * 0.0001)
-    #         # pygame.draw.line(screen, GRAY, player_pos, (x, y), 2)
-    #         if (x // TILE * TILE, y // TILE * TILE) in world_map:
-    #             proj_h = PROJ_COEFF / depth
-    #             pygame.draw.rect(screen, (color // 3, color // 2, color), (ray * SCALE, (HEIGHT // 2) - proj_h // 2, SCALE, proj_h))
-    #             break
-    #     cur_angle += DELTA_ANGLE
-
     walls = []
-
     ox, oy = player.pos
     xm, ym = mapping(ox, oy)
-    cur_angle = player.angle - (FOV / 2)
-    depth_v = 0
-    depth_h = 0
+    cur_angle = player.angle - HALF_FOV
     for ray in range(NRAYS):
         sin_a = math.sin(cur_angle)
         cos_a = math.cos(cur_angle)
+        sin_a = sin_a if sin_a else 0.000001
+        cos_a = cos_a if cos_a else 0.000001
 
-        if cos_a >= 0:
-            x = xm + TILE
-            dx = 1
-        else:
-            x = xm
-            dx = -1
-
+        # verticals
+        x, dx = (xm + TILE, 1) if cos_a >= 0 else (xm, -1)
         for i in range(0, WIDTH, TILE):
             depth_v = (x - ox) / cos_a
             yv = oy + depth_v * sin_a
@@ -51,13 +28,8 @@ def ray_casting(player, textures):
                 break
             x += dx * TILE
 
-        if sin_a >= 0:
-            y = ym + TILE
-            dy = 1
-        else:
-            y = ym
-            dy = -1
-
+        # horizontals
+        y, dy = (ym + TILE, 1) if sin_a >= 0 else (ym, -1)
         for i in range(0, HEIGHT, TILE):
             depth_h = (y - oy) / sin_a
             xh = ox + depth_h * cos_a
@@ -67,19 +39,17 @@ def ray_casting(player, textures):
                 break
             y += dy * TILE
 
+        # projection
         depth, offset, texture = (depth_v, yv, texture_v) if depth_v < depth_h else (depth_h, xh, texture_h)
-        depth *= math.cos(player.angle - cur_angle)
         offset = int(offset) % TILE
-        depth = max(depth, 0.0000000000001)
-        proj_h = min(int(PROJ_COEFF / depth), 2 * HEIGHT)
-        # это покраска одной части стены
-        wall_c = textures[texture].subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE, TEXTURE_H)
-        wall_c = pygame.transform.scale(wall_c, (SCALE, proj_h))
+        depth *= math.cos(player.angle - cur_angle)
+        depth = max(depth, 0.00001)
+        proj_height = min(int(PROJ_COEFF / depth), 2 * HEIGHT)
 
-        wall_pos = (ray * SCALE, (HEIGHT//2) - proj_h // 2)
+        wall_column = textures[texture].subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE, TEXTURE_H)
+        wall_column = pygame.transform.scale(wall_column, (SCALE, proj_height))
+        wall_pos = (ray * SCALE, HALF_HEIGHT - proj_height // 2)
 
-        walls.append((depth, wall_c, wall_pos))
-
+        walls.append((depth, wall_column, wall_pos))
         cur_angle += DELTA_ANGLE
-
     return walls

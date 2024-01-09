@@ -18,13 +18,19 @@ DIST = NRAYS / (2 * math.tan(FOV/2))
 PROJ_COEFF = 4 * DIST * TILE
 SCALE = WIDTH // NRAYS
 
+# наконец-то я добавил это
+HALF_WIDTH = WIDTH // 2
+HALF_HEIGHT = HEIGHT // 2
+HALF_FOV = FOV / 2
+
 # текстуры
-TEXTURE_W, TEXTURE_H = WIDTH, HEIGHT
+TEXTURE_W, TEXTURE_H = WIDTH, WIDTH
 TEXTURE_SCALE = WIDTH // TILE
 
 # спрайты(вкусно)
-D_PI = math.pi * 2
-C_RAY = NRAYS // 2 - 1
+DOUBLE_PI = math.pi * 2
+CENTER_RAY = NRAYS // 2 - 1
+FAKE_RAYS = 100
 
 # настройки игрока
 player_pos = (WIDTH//2, HEIGHT//2)

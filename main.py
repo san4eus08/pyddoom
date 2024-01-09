@@ -163,7 +163,7 @@ pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 player = Player()
-start_screen()
+#start_screen()
 drawing = Drawing(screen)
 sprites = Sprites()
 while True:
