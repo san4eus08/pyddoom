@@ -84,7 +84,6 @@ def sattings():
 
     pygame.draw.rect(screen, color, button4[2])
     screen.blit(button4[0], button4[1])
-    print(button1[2].x, button1[2].y)
 
     while True:
         screen.fill((0, 0, 0))
@@ -140,7 +139,7 @@ def sattings():
                         settings.FPS += 15
                 if e.button == 1:
                     mouse_pos = pygame.mouse.get_pos()
-                    if button1[3].collidepoint(mouse_pos):
+                    if button2[3].collidepoint(mouse_pos):
                         if settings.ANGLE > 0.01:
                             settings.ANGLE -= 0.01
                 if e.button == 1:
@@ -221,8 +220,8 @@ def get_component_button(button_x, button_y, text):
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
-player = Player()
-#start_screen()
+player = Player(settings.ANGLE)
+start_screen()
 drawing = Drawing(screen)
 sprites = Sprites()
 while True:
