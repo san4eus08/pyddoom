@@ -7,10 +7,12 @@ from settings import *
 class Sprites:
     def __init__(self):
         self.sprites_types = {
-            'monster': pygame.image.load('textures/texture.png').convert_alpha()
+            'monster1': pygame.image.load('textures/mobe1.png').convert_alpha(),
+            'monster2': pygame.image.load('textures/mobe2.png').convert_alpha()
         }
         self.list_of_objects = [
-            SpriteObject(self.sprites_types['monster'], True, (6, 6), 1, 0.4)
+            SpriteObject(self.sprites_types['monster1'], True, (7, 2), 0, 1),
+            SpriteObject(self.sprites_types['monster2'], True, (2, 2), 0.2, 0.8)
         ]
 
 
