@@ -84,9 +84,6 @@ def sattings():
         pygame.draw.rect(screen, color, button4[2])
         screen.blit(button4[0], button4[1])
 
-        resolution = font.render(f'{WIDTH}/{HEIGHT}', True, (255, 255, 255))
-        screen.blit(resolution, (button[2].x + 360, button[2].y))
-
         fps = font.render(f'{settings.FPS}', True, (255, 255, 255))
         screen.blit(fps, (button1[2].x + 360, button1[2].y))
 
