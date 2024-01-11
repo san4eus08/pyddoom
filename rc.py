@@ -17,7 +17,7 @@ def ray_casting(player, textures):
         sin_a = sin_a if sin_a else 0.000001
         cos_a = cos_a if cos_a else 0.000001
 
-        # verticals
+        # поиск пересечения с вертикалями
         x, dx = (xm + TILE, 1) if cos_a >= 0 else (xm, -1)
         for i in range(0, WIDTH, TILE):
             depth_v = (x - ox) / cos_a
@@ -28,7 +28,7 @@ def ray_casting(player, textures):
                 break
             x += dx * TILE
 
-        # horizontals
+        # поиск пересечения с горизонталями
         y, dy = (ym + TILE, 1) if sin_a >= 0 else (ym, -1)
         for i in range(0, HEIGHT, TILE):
             depth_h = (y - oy) / sin_a
@@ -39,7 +39,7 @@ def ray_casting(player, textures):
                 break
             y += dy * TILE
 
-        # projection
+        # отображение
         depth, offset, texture = (depth_v, yv, texture_v) if depth_v < depth_h else (depth_h, xh, texture_h)
         offset = int(offset) % TILE
         depth *= math.cos(player.angle - cur_angle)
