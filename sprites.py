@@ -15,7 +15,7 @@ class Sprites:
         self.list_of_objects = [
             SpriteObject(self.sprites_types['monster1'], True, (7, 2), 0, 1),
             SpriteObject(self.sprites_types['monster2'], True, (2, 2), 0.2, 0.8),
-            SpriteObject(self.sprites_types['light2'], True, (6.2, 8.2), -1.5, 0.5)
+            SpriteObject(self.sprites_types['light2'], True, (6.5, 8.5), -1.5, 0.5)
         ]
 
 
