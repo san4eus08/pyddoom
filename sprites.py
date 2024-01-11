@@ -34,6 +34,7 @@ class SpriteObject:
 
         dx, dy = self.x - player.x, self.y - player.y
         distance_to_sprite = math.sqrt(dx ** 2 + dy ** 2)
+        # дальше бога нет...
 
         theta = math.atan2(dy, dx)
         gamma = theta - player.angle
