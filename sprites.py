@@ -8,11 +8,14 @@ class Sprites:
     def __init__(self):
         self.sprites_types = {
             'monster1': pygame.image.load('textures/mobe1.png').convert_alpha(),
-            'monster2': pygame.image.load('textures/mobe2.png').convert_alpha()
+            'monster2': pygame.image.load('textures/mobe2.png').convert_alpha(),
+            'light1': pygame.image.load('textures/light1.png').convert_alpha(),
+            'light2': pygame.image.load('textures/light2.png').convert_alpha()
         }
         self.list_of_objects = [
             SpriteObject(self.sprites_types['monster1'], True, (7, 2), 0, 1),
-            SpriteObject(self.sprites_types['monster2'], True, (2, 2), 0.2, 0.8)
+            SpriteObject(self.sprites_types['monster2'], True, (2, 2), 0.2, 0.8),
+            SpriteObject(self.sprites_types['light2'], True, (6.2, 8.2), -1.5, 0.5)
         ]
 
 
