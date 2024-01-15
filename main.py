@@ -177,9 +177,9 @@ def levels():
 
     pygame.draw.rect(screen, color, button5[2])
     pygame.draw.line(screen, (255, 204, 0), (button5[2].x, button5[2].y), (button5[2].x + button5[2].w,
-                     button5[2].y + button5[2].h))
+                                                                           button5[2].y + button5[2].h))
     pygame.draw.line(screen, (255, 204, 0), (button5[2].x + button5[2].w, button5[2].y), (button5[2].x,
-                     button5[2].y + button5[2].h))
+                                                                                          button5[2].y + button5[2].h))
     screen.blit(button5[0], button5[1])
     while True:
         for e in pygame.event.get():
@@ -195,8 +195,8 @@ def levels():
                     if button2[2].collidepoint(mouse_pos):
                         pass
                     if button5[2].collidepoint(mouse_pos):
-                            start_screen()
-                            return
+                        start_screen()
+                        return
             pygame.display.flip()
 
 
@@ -248,6 +248,7 @@ while True:
 
     walls = ray_casting(player, drawing.textures)
     drawing.draw_space(walls + [obj.object_locate(player, walls) for obj in sprites.list_of_objects])
+    screen.blit(pygame.transform.scale(load_image('gun2.png'), (180, 300)), (660, 700))
 
     clock.tick(settings.FPS)
     print(clock.get_fps())
