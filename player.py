@@ -11,10 +11,41 @@ class Player:
         self.angle = player_angle
         self.speed = player_speed
 
+        # коллизия
+        self.side = 50
+        self.rect = pygame.Rect(*player_pos, self.side, self.side)
+
     # обалдеть что в питоне есть
     @property
     def pos(self):
         return self.x, self.y
+
+    def check_collision(self, dx, dy):
+        next_rect = self.rect.copy()
+        next_rect.move_ip(dx, dy)
+        hits = next_rect.collidelistall(collision_walls)
+
+        if len(hits):
+            delta_x, delta_y = 0, 0
+            for hit in hits:
+                hit_rect = collision_walls[hit]
+                if dx > 0:
+                    delta_x += next_rect.right - hit_rect.left
+                else:
+                    delta_x += hit_rect.right - next_rect.left
+                if dy > 0:
+                    delta_y += next_rect.bottom - hit_rect.top
+                else:
+                    delta_y += hit_rect.bottom - next_rect.top
+
+            if abs(delta_x - delta_y) < 10:
+                dx, dy = 0, 0
+            elif delta_x > delta_y:
+                dy = 0
+            elif delta_y > delta_x:
+                dx = 0
+        self.x += dx
+        self.y += dy
 
     def move(self):
         sin_a = math.sin(self.angle)
@@ -22,21 +53,26 @@ class Player:
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_w]:
-            self.x += self.speed * cos_a
-            self.y += self.speed * sin_a
+            dx = self.speed * cos_a
+            dy = self.speed * sin_a
+            self.check_collision(dx, dy)
         if keys[pygame.K_s]:
-            self.x += -self.speed * cos_a
-            self.y += -self.speed * sin_a
+            dx = -self.speed * cos_a
+            dy = -self.speed * sin_a
+            self.check_collision(dx, dy)
         if keys[pygame.K_a]:
-            self.x += self.speed * sin_a
-            self.y += -self.speed * cos_a
+            dx = self.speed * sin_a
+            dy = -self.speed * cos_a
+            self.check_collision(dx, dy)
         if keys[pygame.K_d]:
-            self.x += -self.speed * sin_a
-            self.y += self.speed * cos_a
+            dx = -self.speed * sin_a
+            dy = self.speed * cos_a
+            self.check_collision(dx, dy)
 
         if keys[pygame.K_LEFT]:
             self.angle -= self.Angle
         if keys[pygame.K_RIGHT]:
             self.angle += self.Angle
 
+        self.rect.center = self.x, self.y
         self.angle %= DOUBLE_PI

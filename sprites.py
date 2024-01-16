@@ -10,7 +10,7 @@ class Sprites:
             'monster': pygame.image.load('textures/texture.png').convert_alpha()
         }
         self.list_of_objects = [
-            SpriteObject(self.sprites_types['monster'], True, (6, 6), 1, 0.4)
+            SpriteObject(self.sprites_types['monster'], True, (6, 6), -1, 1)
         ]
 
 

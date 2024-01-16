@@ -6,8 +6,8 @@ from rc import ray_casting
 class Drawing:
     def __init__(self, sc):
         self.sc = sc
-        self.textures = {'1': pygame.image.load('textures/wall.png').convert(),
-                         '2': pygame.image.load('textures/wall2.png').convert()}
+        self.textures = {1: pygame.image.load('textures/wall.png').convert(),
+                         2: pygame.image.load('textures/wall2.png').convert()}
 
     def draw_background(self):
         pygame.draw.rect(self.sc, BLUE, (0, 0, WIDTH, (HEIGHT // 2)))
