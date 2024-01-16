@@ -9,7 +9,7 @@ import pygame
 import settings
 from settings import *
 from settings import FPS
-from player import Player
+from player import Player, Weapon
 from sprites import *
 from rc import *
 
@@ -58,19 +58,15 @@ def start_screen():
 
 def sattings():
     font = pygame.font.SysFont("Verdana", 50)
-    button = get_component_button(WIDTH // 2 - 150, HEIGHT // 2 - 200, '<ПОЛН. ЭКРАН.>')
-    button1 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2 - 100, '<МАКС FPS>')
-    button2 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2, '<ЧУВСТВ.>')
-    button3 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2 + 100, '<ЗВУК>')
-    button4 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2 + 200, 'В МЕНЮ')
+    button1 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2 - 150, '<МАКС FPS>')
+    button2 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2 - 50, '<ЧУВСТВ.>')
+    button3 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2 + 50, '<ЗВУК>')
+    button4 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2 + 150, 'В МЕНЮ')
     color = (162, 65, 47)
     while True:
         screen.fill((0, 0, 0))
         fon = pygame.transform.scale(load_image('settings.jpeg'), (WIDTH, HEIGHT))
         screen.blit(fon, (0, 0))
-
-        pygame.draw.rect(screen, color, button[2])
-        screen.blit(button[0], button[1])
 
         pygame.draw.rect(screen, color, button1[2])
         screen.blit(button1[0], button1[1])
@@ -98,10 +94,6 @@ def sattings():
             elif e.type == pygame.MOUSEBUTTONDOWN:
                 if e.button == 1:
                     mouse_pos = pygame.mouse.get_pos()
-                    if button[3].collidepoint(mouse_pos):
-                        pass
-                    if button[4].collidepoint(mouse_pos):
-                        pass
                     if button1[3].collidepoint(mouse_pos):
                         if settings.FPS > 15:
                             settings.FPS -= 15
@@ -231,6 +223,9 @@ player = Player(settings.ANGLE)
 start_screen()
 drawing = Drawing(screen)
 sprites = Sprites()
+all_sprites = pygame.sprite.Group()
+weapon = Weapon(all_sprites)
+i = 0
 while True:
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
@@ -238,7 +233,10 @@ while True:
         elif e.type == pygame.KEYDOWN:
             if pygame.key.get_pressed()[pygame.K_ESCAPE]:
                 pause()
-
+            if pygame.key.get_pressed()[pygame.K_SPACE]:
+                all_sprites.update(0)
+    if i % 10 == 0:
+        all_sprites.update(1)
     screen.fill(BLACK)
     player.move()
     pygame.draw.rect(screen, BLUE, (0, 0, WIDTH, (HEIGHT // 2)))
@@ -248,7 +246,7 @@ while True:
 
     walls = ray_casting(player, drawing.textures)
     drawing.draw_space(walls + [obj.object_locate(player, walls) for obj in sprites.list_of_objects])
-    screen.blit(pygame.transform.scale(load_image('gun2.png'), (180, 300)), (660, 700))
+    all_sprites.draw(screen)
 
     clock.tick(settings.FPS)
     print(clock.get_fps())
@@ -259,3 +257,4 @@ while True:
     # for x,y in world_map:
     # pygame.draw.rect(screen, GRAY, (x, y, TILE, TILE), 2)
     pygame.display.flip()
+    i += 1

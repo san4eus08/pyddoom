@@ -76,3 +76,22 @@ class Player:
 
         self.rect.center = self.x, self.y
         self.angle %= DOUBLE_PI
+
+
+class Weapon(pygame.sprite.Sprite):
+    image = pygame.image.load('Data/gun2.png')
+    gun = pygame.image.load('Data/gun2.png')
+    shot = pygame.image.load('Data/gun3.png')
+
+    def __init__(self, group):
+        super().__init__(group)
+        self.image = Weapon.image
+        self.rect = self.image.get_rect()
+        self.rect.x = 660
+        self.rect.y = 543
+
+    def update(self, n=0):
+        if n % 2 == 0:
+            self.image = self.shot
+        else:
+            self.image = self.gun
