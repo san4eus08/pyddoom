@@ -15,13 +15,13 @@ from rc import *
 
 
 def start_screen():
+    font = pygame.font.SysFont("Verdana", 250)
     fon = pygame.transform.scale(load_image('lobby.jpg'), (WIDTH, HEIGHT))
     screen.blit(fon, (0, 0))
     button = get_component_button(WIDTH // 2, HEIGHT // 2 - 140, 'ИГРАТЬ')
     button1 = get_component_button(WIDTH // 2, HEIGHT // 2 - 70, 'УРОВНИ')
-    button2 = get_component_button(WIDTH // 2, HEIGHT // 2, 'ОРУЖИЕ')
-    button3 = get_component_button(WIDTH // 2, HEIGHT // 2 + 70, 'НАСТРОЙКИ')
-    button4 = get_component_button(WIDTH // 2, HEIGHT // 2 + 140, 'ВЫЙТИ')
+    button3 = get_component_button(WIDTH // 2, HEIGHT // 2, 'НАСТРОЙКИ')
+    button4 = get_component_button(WIDTH // 2, HEIGHT // 2 + 70, 'ВЫЙТИ')
     color = (162, 65, 47)
     pygame.draw.rect(screen, color, button[2])
     screen.blit(button[0], button[1])
@@ -29,15 +29,14 @@ def start_screen():
     pygame.draw.rect(screen, color, button1[2])
     screen.blit(button1[0], button1[1])
 
-    pygame.draw.rect(screen, color, button2[2])
-    screen.blit(button2[0], button2[1])
-
     pygame.draw.rect(screen, color, button3[2])
     screen.blit(button3[0], button3[1])
 
     pygame.draw.rect(screen, color, button4[2])
     screen.blit(button4[0], button4[1])
 
+    doom = font.render('DOOM', True, (255, 204, 0))
+    screen.blit(doom, (WIDTH // 2 - 400, 10))
     while True:
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
@@ -49,8 +48,10 @@ def start_screen():
                         return
                     if button1[2].collidepoint(mouse_pos):
                         levels()
+                        return
                     if button3[2].collidepoint(mouse_pos):
                         sattings()
+                        return
                     if button4[2].collidepoint(mouse_pos):
                         exit()
         pygame.display.flip()
@@ -137,8 +138,10 @@ def pause():
                         return
                     if button1[2].collidepoint(mouse_pos):
                         sattings()
+                        return
                     if button2[2].collidepoint(mouse_pos):
                         start_screen()
+                        return
         pygame.display.flip()
 
 
@@ -150,7 +153,7 @@ def levels():
     button2 = get_component_button(WIDTH // 4, HEIGHT // 2 + 150, '', 200, 200)
     button3 = get_component_button(WIDTH // 2 - 100, HEIGHT // 2 + 150, '', 200, 200)
     button4 = get_component_button(WIDTH // 2 + 250, HEIGHT // 2 + 25, '', 300, 300)
-    button5 = get_component_button(145, 180, '', 50, 50)
+    button5 = get_component_button(10, 10, '', 50, 50)
     color = (162, 65, 47)
     pygame.draw.rect(screen, color, button[2])
     screen.blit(button[0], button[1])
@@ -190,6 +193,34 @@ def levels():
                         start_screen()
                         return
             pygame.display.flip()
+
+
+def defeat():
+    font = pygame.font.SysFont("Verdana", 200)
+    screen.fill((86, 86, 86))
+    button = get_component_button(WIDTH // 2, HEIGHT // 2, 'ЗАНОВО', 500, 100)
+    button1 = get_component_button(WIDTH // 2, HEIGHT // 2 + 110, 'В МЕНЮ', 500, 100)
+    color = (162, 65, 47)
+    pygame.draw.rect(screen, color, button[2])
+    screen.blit(button[0], button[1])
+
+    pygame.draw.rect(screen, color, button1[2])
+    screen.blit(button1[0], button1[1])
+    doom = font.render('ВЫ УМЕРЛИ', True, (255, 204, 0))
+    screen.blit(doom, (WIDTH // 2 - 600, 50))
+    while True:
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                pygame.quit()
+            elif e.type == pygame.MOUSEBUTTONDOWN:
+                if e.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if button[2].collidepoint(mouse_pos):
+                        return
+                    if button1[2].collidepoint(mouse_pos):
+                        start_screen()
+                        return
+        pygame.display.flip()
 
 
 def load_image(name, colorkey=None):
@@ -251,7 +282,7 @@ while True:
     if player.helth > 0:
         pygame.draw.rect(screen, RED, (20, HEIGHT - 60, player.helth * 4, 40))
     else:
-        final()
+        defeat()
 
     clock.tick(settings.FPS)
     print(clock.get_fps())
