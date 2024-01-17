@@ -10,6 +10,7 @@ class Player:
         self.Angle = Angle
         self.angle = player_angle
         self.speed = player_speed
+        self.helth = 100
 
         # коллизия
         self.side = 50
@@ -88,7 +89,7 @@ class Weapon(pygame.sprite.Sprite):
         self.image = Weapon.image
         self.rect = self.image.get_rect()
         self.rect.x = 660
-        self.rect.y = 543
+        self.rect.y = 700
 
     def update(self, n=0):
         if n % 2 == 0:

@@ -235,6 +235,7 @@ while True:
                 pause()
             if pygame.key.get_pressed()[pygame.K_SPACE]:
                 all_sprites.update(0)
+                player.helth -= 10
     if i % 10 == 0:
         all_sprites.update(1)
     screen.fill(BLACK)
@@ -247,6 +248,10 @@ while True:
     walls = ray_casting(player, drawing.textures)
     drawing.draw_space(walls + [obj.object_locate(player, walls) for obj in sprites.list_of_objects])
     all_sprites.draw(screen)
+    if player.helth > 0:
+        pygame.draw.rect(screen, RED, (20, HEIGHT - 60, player.helth * 4, 40))
+    else:
+        final()
 
     clock.tick(settings.FPS)
     print(clock.get_fps())
