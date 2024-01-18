@@ -267,6 +267,7 @@ player = Player(settings.ANGLE, sprites)
 all_sprites = pygame.sprite.Group()
 weapon = Weapon(all_sprites)
 i = 0
+is_shooting = False
 while True:
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
@@ -277,8 +278,10 @@ while True:
             if pygame.key.get_pressed()[pygame.K_SPACE]:
                 all_sprites.update(0)
                 player.helth -= 10
+                is_shooting = True
     if i % 10 == 0:
         all_sprites.update(1)
+        is_shooting = False
     screen.fill(BLACK)
     player.move()
     pygame.draw.rect(screen, BLUE, (0, 0, WIDTH, (HEIGHT // 2)))
@@ -294,6 +297,7 @@ while True:
         pygame.draw.rect(screen, RED, (20, HEIGHT - 60, player.helth * 4, 40))
     else:
         defeat()
+        player.helth = 100
 
     clock.tick(settings.FPS)
     print(clock.get_fps())
