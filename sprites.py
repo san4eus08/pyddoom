@@ -48,6 +48,7 @@ class SpriteObject:
         self.type = params['type']
         self.is_dead = params['is_dead']
         self.side = 30
+        self.is_active = params['is_active']
         self.x, self.y = pos[0] * TILE, pos[1] * TILE
 
     @property

@@ -6,7 +6,7 @@ from numba.typed import Dict
 from numba import int32
 
 WIDTH = 1500
-HEIGHT = 1000
+HEIGHT = 843
 PENTA_HEIGHT = 5 * HEIGHT
 
 ANGLE = 0.05
