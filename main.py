@@ -247,6 +247,16 @@ def get_component_button(button_x, button_y, text='', button_width=300, button_h
     return text_surface, text_rect, button_rect, button_up_rect, button_down_rect
 
 
+def npc_check(sprites_list):
+    for obj in sprites_list:
+        if obj.is_active:
+            del_x = sprt.x - player.pos[0]
+            del_y = sprt.y - player.pos[1]
+            sprt.x = sprt.x + 1 if del_x < 0 else sprt.x - 1
+            sprt.y = sprt.y + 1 if del_y < 0 else sprt.y - 1
+            player.helth -= 0.05
+
+
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
@@ -278,11 +288,7 @@ while True:
 
     walls, wall_shot = ray_casting_walls(player, drawing.textures)
     drawing.draw_space(walls + [obj.object_locate(player, walls) for obj in sprites.list_of_objects])
-    sprt = sprites.list_of_objects[0]
-    del_x = sprt.x - player.pos[0]
-    del_y = sprt.y - player.pos[1]
-    sprt.x = sprt.x + 1 if del_x < 0 else sprt.x - 1
-    sprt.y = sprt.y + 1 if del_y < 0 else sprt.y - 1
+
     all_sprites.draw(screen)
     if player.helth > 0:
         pygame.draw.rect(screen, RED, (20, HEIGHT - 60, player.helth * 4, 40))

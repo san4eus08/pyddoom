@@ -14,7 +14,8 @@ class Sprites:
                 'scale': 1,
                 'not_fake': True,
                 'type': 'npc',
-                'is_dead': False
+                'is_dead': False,
+                'is_active': False
             },
             'light': {
                 'sprite': pygame.image.load('textures/light2.png').convert_alpha(),
@@ -23,7 +24,8 @@ class Sprites:
                 'scale': 1,
                 'not_fake': False,
                 'type': 'decor',
-                'is_dead': 'None'
+                'is_dead': 'None',
+                'is_active': False
             }
         }
         self.list_of_objects = [

@@ -17,7 +17,6 @@ def ray_casting_npc(npc_x, npc_y, world_map, player_pos):
     cos_a = math.cos(cur_angle)
     cos_a = cos_a if cos_a else 0.000001
 
-    # verticals
     x, dx = (xm + TILE, 1) if cos_a >= 0 else (xm, -1)
     for i in range(0, int(abs(delta_x)) // TILE):
         depth_v = (x - ox) / cos_a
@@ -27,7 +26,6 @@ def ray_casting_npc(npc_x, npc_y, world_map, player_pos):
             return False
         x += dx * TILE
 
-    # horizontals
     y, dy = (ym + TILE, 1) if sin_a >= 0 else (ym, -1)
     for i in range(0, int(abs(delta_y)) // TILE):
         depth_h = (y - oy) / sin_a
@@ -37,3 +35,10 @@ def ray_casting_npc(npc_x, npc_y, world_map, player_pos):
             return False
         y += dy * TILE
     return True
+
+
+class Interact:
+    def __init__(self, player, sprites):
+        self.player = player
+        self.sprites = sprites
+
