@@ -15,6 +15,8 @@ from rc import *
 from interact import *
 
 
+current_level = 0
+
 def start_screen():
     font = pygame.font.SysFont("Verdana", 250)
     fon = pygame.transform.scale(load_image('lobby.jpg'), (WIDTH, HEIGHT))
