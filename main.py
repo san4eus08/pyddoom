@@ -217,7 +217,7 @@ def defeat():
                 if e.button == 1:
                     mouse_pos = pygame.mouse.get_pos()
                     if button[2].collidepoint(mouse_pos):
-                        return
+                        main()
                     if button1[2].collidepoint(mouse_pos):
                         start_screen()
                         return
@@ -248,68 +248,88 @@ def get_component_button(button_x, button_y, text='', button_width=300, button_h
     return text_surface, text_rect, button_rect, button_up_rect, button_down_rect
 
 
-def npc_check(sprites_list):
-    for obj in sprites_list:
-        if obj.is_active:
-            del_x = obj.x - player.pos[0]
-            del_y = obj.y - player.pos[1]
-            obj.x = obj.x + 1 if del_x < 0 else obj.x - 1
-            obj.y = obj.y + 1 if del_y < 0 else obj.y - 1
-            player.helth -= 0.05
-
-
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 start_screen()
-drawing = Drawing(screen)
-sprites = Sprites()
-player = Player(settings.ANGLE, sprites)
-all_sprites = pygame.sprite.Group()
-weapon = Weapon(all_sprites)
-interactive = Interact(player, sprites)
-i = 0
-is_shooting = False
-while True:
-    for e in pygame.event.get():
-        if e.type == pygame.QUIT:
-            exit()
-        elif e.type == pygame.KEYDOWN:
-            if pygame.key.get_pressed()[pygame.K_ESCAPE]:
-                pause()
-            if pygame.key.get_pressed()[pygame.K_SPACE]:
-                all_sprites.update(0)
-                is_shooting = True
-    if i % 10 == 0:
-        all_sprites.update(1)
-        is_shooting = False
-    screen.fill(BLACK)
-    player.move()
-    pygame.draw.rect(screen, BLUE, (0, 0, WIDTH, (HEIGHT // 2)))
-    pygame.draw.rect(screen, GRAY, (0, (HEIGHT // 2), WIDTH, (HEIGHT // 2)))
 
-    drawing.draw_background()
 
-    walls, wall_shot = ray_casting_walls(player, drawing.textures)
-    drawing.draw_space(walls + [obj.object_locate(player, walls) for obj in sprites.list_of_objects])
+def main():
+    i = 0
+    with open('deaths.txt', 'r') as file:
+        death_count = int(file.read())
+    with open('kills.txt', 'r') as file:
+        kills_count = int(file.read())
+    drawing = Drawing(screen)
+    sprites = Sprites()
+    player = Player(settings.ANGLE, sprites)
+    all_sprites = pygame.sprite.Group()
+    weapon = Weapon(all_sprites)
+    interactive = Interact(player, sprites)
+    is_shooting = False
+    player.helth = 100
 
-    all_sprites.draw(screen)
-    if player.helth > 0:
-        pygame.draw.rect(screen, RED, (20, HEIGHT - 60, player.helth * 4, 40))
-    else:
-        defeat()
-        player.helth = 100
+    def npc_check(sprites_list, kills):
+        for obj in sprites_list:
+            if obj.is_active:
+                del_x = obj.x - player.pos[0]
+                del_y = obj.y - player.pos[1]
+                obj.x = obj.x + 1 if del_x < 0 else obj.x - 1
+                obj.y = obj.y + 1 if del_y < 0 else obj.y - 1
+                player.helth -= 0.05
+            if obj.is_dead:
+                sprites.list_of_objects.remove(obj)
+                kills += 1
+                with open('kills.txt', 'w') as f:
+                    f.write(str(kills))
 
-    interactive.npc_action()
-    npc_check(sprites.list_of_objects)
+    while True:
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                exit()
+            elif e.type == pygame.KEYDOWN:
+                if pygame.key.get_pressed()[pygame.K_ESCAPE]:
+                    pause()
+                if pygame.key.get_pressed()[pygame.K_SPACE]:
+                    all_sprites.update(0)
+                    is_shooting = True
+        interactive.shooting(is_shooting)
+        if i % 10 == 0:
+            all_sprites.update(1)
+            is_shooting = False
+        screen.fill(BLACK)
+        player.move()
+        pygame.draw.rect(screen, BLUE, (0, 0, WIDTH, (HEIGHT // 2)))
+        pygame.draw.rect(screen, GRAY, (0, (HEIGHT // 2), WIDTH, (HEIGHT // 2)))
 
-    clock.tick(settings.FPS)
-    print(clock.get_fps())
+        drawing.draw_background()
 
-    # pygame.draw.circle(screen, GREEN, (int(player.x), int(player.y)), 10)
-    # pygame.draw.line(screen, RED, player.pos, (player.x + WIDTH * math.cos(plНayer.angle),
-    # player.y + WIDTH * math.sin(player.angle)))
-    # for x,y in world_map:
-    # pygame.draw.rect(screen, GRAY, (x, y, TILE, TILE), 2)
-    pygame.display.flip()
-    i += 1
+        walls, wall_shot = ray_casting_walls(player, drawing.textures)
+        drawing.draw_space(walls + [obj.object_locate(player, walls) for obj in sprites.list_of_objects])
+
+        all_sprites.draw(screen)
+        if player.helth > 0:
+            pygame.draw.rect(screen, RED, (20, HEIGHT - 60, player.helth * 4, 40))
+        else:
+            defeat()
+            death_count += 1
+            with open('death.txt', 'w') as f:
+                f.write(str(death_count))
+            break
+
+        interactive.npc_action()
+        npc_check(sprites.list_of_objects, kills_count)
+
+        clock.tick(settings.FPS)
+        print(clock.get_fps())
+
+        # pygame.draw.circle(screen, GREEN, (int(player.x), int(player.y)), 10)
+        # pygame.draw.line(screen, RED, player.pos, (player.x + WIDTH * math.cos(plНayer.angle),
+        # player.y + WIDTH * math.sin(player.angle)))
+        # for x,y in world_map:
+        # pygame.draw.rect(screen, GRAY, (x, y, TILE, TILE), 2)
+        pygame.display.flip()
+        i += 1
+
+
+main()
