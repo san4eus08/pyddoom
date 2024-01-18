@@ -18,10 +18,10 @@ def start_screen():
     font = pygame.font.SysFont("Verdana", 250)
     fon = pygame.transform.scale(load_image('lobby.jpg'), (WIDTH, HEIGHT))
     screen.blit(fon, (0, 0))
-    button = get_component_button(WIDTH // 2, HEIGHT // 2 - 140, 'ИГРАТЬ')
-    button1 = get_component_button(WIDTH // 2, HEIGHT // 2 - 70, 'УРОВНИ')
-    button3 = get_component_button(WIDTH // 2, HEIGHT // 2, 'НАСТРОЙКИ')
-    button4 = get_component_button(WIDTH // 2, HEIGHT // 2 + 70, 'ВЫЙТИ')
+    button = get_component_button(WIDTH // 2, HEIGHT // 2 - 100, 'ИГРАТЬ')
+    button1 = get_component_button(WIDTH // 2, HEIGHT // 2 - 30, 'УРОВНИ')
+    button3 = get_component_button(WIDTH // 2, HEIGHT // 2 + 40, 'НАСТРОЙКИ')
+    button4 = get_component_button(WIDTH // 2, HEIGHT // 2 + 110, 'ВЫЙТИ')
     color = (162, 65, 47)
     pygame.draw.rect(screen, color, button[2])
     screen.blit(button[0], button[1])
@@ -277,7 +277,6 @@ while True:
                 pause()
             if pygame.key.get_pressed()[pygame.K_SPACE]:
                 all_sprites.update(0)
-                player.helth -= 10
                 is_shooting = True
     if i % 10 == 0:
         all_sprites.update(1)

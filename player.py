@@ -92,7 +92,7 @@ class Weapon(pygame.sprite.Sprite):
         self.image = Weapon.image
         self.rect = self.image.get_rect()
         self.rect.x = 660
-        self.rect.y = 700
+        self.rect.y = 543
 
     def update(self, n=0):
         if n % 2 == 0:
