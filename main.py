@@ -1,14 +1,12 @@
 import math
-from drawing import Drawing
+from drawing import *
 
 import sys
 
 import os
 import pygame
 
-import settings
 from settings import *
-from settings import FPS
 from player import Player, Weapon
 from sprites import *
 from rc import *
@@ -16,6 +14,7 @@ from interact import *
 
 
 current_level = 0
+
 
 def start_screen():
     font = pygame.font.SysFont("Verdana", 250)
@@ -264,7 +263,7 @@ def main():
         kills_count = int(file.read())
     drawing = Drawing(screen)
     sprites = Sprites()
-    player = Player(settings.ANGLE, sprites)
+    player = Player(ANGLE, sprites)
     all_sprites = pygame.sprite.Group()
     weapon = Weapon(all_sprites)
     interactive = Interact(player, sprites)
@@ -322,7 +321,7 @@ def main():
         interactive.npc_action()
         npc_check(sprites.list_of_objects, kills_count)
 
-        clock.tick(settings.FPS)
+        clock.tick(FPS)
         print(clock.get_fps())
 
         # pygame.draw.circle(screen, GREEN, (int(player.x), int(player.y)), 10)

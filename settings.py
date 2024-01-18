@@ -4,7 +4,7 @@ import pygame
 from numba.core import types
 from numba.typed import Dict
 from numba import int32
-from main import current_level
+#from main import current_level
 
 WIDTH = 1500
 HEIGHT = 843
@@ -107,7 +107,7 @@ mega_text_map = [
 ]
 ]
 
-text_map = mega_text_map[current_level]
+text_map = mega_text_map[0]
 
 WORLD_WIDTH = len(text_map[0]) * TILE
 WORLD_HEIGHT = len(text_map) * TILE
