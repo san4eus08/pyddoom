@@ -250,10 +250,10 @@ def get_component_button(button_x, button_y, text='', button_width=300, button_h
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
-player = Player(settings.ANGLE)
 start_screen()
 drawing = Drawing(screen)
 sprites = Sprites()
+player = Player(settings.ANGLE, sprites)
 all_sprites = pygame.sprite.Group()
 weapon = Weapon(all_sprites)
 i = 0
@@ -276,7 +276,7 @@ while True:
 
     drawing.draw_background()
 
-    walls = ray_casting(player, drawing.textures)
+    walls, wall_shot = ray_casting_walls(player, drawing.textures)
     drawing.draw_space(walls + [obj.object_locate(player, walls) for obj in sprites.list_of_objects])
     all_sprites.draw(screen)
     if player.helth > 0:

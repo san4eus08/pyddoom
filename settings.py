@@ -1,9 +1,13 @@
 # константы настроек
 import math
 import pygame
+from numba.core import types
+from numba.typed import Dict
+from numba import int32
 
 WIDTH = 1500
 HEIGHT = 1000
+PENTA_HEIGHT = 5 * HEIGHT
 
 ANGLE = 0.05
 
@@ -67,7 +71,7 @@ WORLD_HEIGHT = len(text_map) * TILE
 # Урааа коллизия
 collision_walls = []
 
-world_map = {}
+world_map = Dict.empty(key_type=types.UniTuple(int32, 2), value_type=int32)
 for i, row in enumerate(text_map):
     for j, char in enumerate(row):
         if char:

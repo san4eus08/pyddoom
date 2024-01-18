@@ -5,16 +5,19 @@ from settings import *
 
 
 class Player:
-    def __init__(self, Angle):
+    def __init__(self, Angle, sprites):
         self.x, self.y = player_pos
         self.Angle = Angle
         self.angle = player_angle
         self.speed = player_speed
         self.helth = 100
-
         # коллизия
         self.side = 50
         self.rect = pygame.Rect(*player_pos, self.side, self.side)
+        self.sprites = sprites
+        self.collision_sprites = [pygame.Rect(*obj.pos, obj.side, obj.side) for obj in
+                                  self.sprites.list_of_objects if obj.not_fake]
+        self.collision = collision_walls + self.collision_sprites
 
     # обалдеть что в питоне есть
     @property
@@ -24,12 +27,12 @@ class Player:
     def check_collision(self, dx, dy):
         next_rect = self.rect.copy()
         next_rect.move_ip(dx, dy)
-        hits = next_rect.collidelistall(collision_walls)
+        hits = next_rect.collidelistall(self.collision)
 
         if len(hits):
             delta_x, delta_y = 0, 0
             for hit in hits:
-                hit_rect = collision_walls[hit]
+                hit_rect = self.collision[hit]
                 if dx > 0:
                     delta_x += next_rect.right - hit_rect.left
                 else:
@@ -39,7 +42,7 @@ class Player:
                 else:
                     delta_y += hit_rect.bottom - next_rect.top
 
-            if abs(delta_x - delta_y) < 10:
+            if abs(delta_x - delta_y) < 20:
                 dx, dy = 0, 0
             elif delta_x > delta_y:
                 dy = 0
