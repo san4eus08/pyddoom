@@ -12,6 +12,7 @@ from settings import FPS
 from player import Player, Weapon
 from sprites import *
 from rc import *
+from interact import *
 
 
 def start_screen():
@@ -250,10 +251,10 @@ def get_component_button(button_x, button_y, text='', button_width=300, button_h
 def npc_check(sprites_list):
     for obj in sprites_list:
         if obj.is_active:
-            del_x = sprt.x - player.pos[0]
-            del_y = sprt.y - player.pos[1]
-            sprt.x = sprt.x + 1 if del_x < 0 else sprt.x - 1
-            sprt.y = sprt.y + 1 if del_y < 0 else sprt.y - 1
+            del_x = obj.x - player.pos[0]
+            del_y = obj.y - player.pos[1]
+            obj.x = obj.x + 1 if del_x < 0 else obj.x - 1
+            obj.y = obj.y + 1 if del_y < 0 else obj.y - 1
             player.helth -= 0.05
 
 
@@ -266,6 +267,7 @@ sprites = Sprites()
 player = Player(settings.ANGLE, sprites)
 all_sprites = pygame.sprite.Group()
 weapon = Weapon(all_sprites)
+interactive = Interact(player, sprites)
 i = 0
 is_shooting = False
 while True:
@@ -297,6 +299,9 @@ while True:
     else:
         defeat()
         player.helth = 100
+
+    interactive.npc_action()
+    npc_check(sprites.list_of_objects)
 
     clock.tick(settings.FPS)
     print(clock.get_fps())
