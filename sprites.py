@@ -12,14 +12,20 @@ class Sprites:
                 'static': True,
                 'shift': 0,
                 'scale': 1,
-                'not_fake': True
+                'not_fake': True,
+                'type': 'npc',
+                'is_dead': False,
+                'is_active': False
             },
             'light': {
                 'sprite': pygame.image.load('textures/light2.png').convert_alpha(),
                 'static': True,
                 'shift': -1,
                 'scale': 1,
-                'not_fake': False
+                'not_fake': False,
+                'type': 'decor',
+                'is_dead': 'None',
+                'is_active': False
             }
         }
         self.list_of_objects = [
@@ -39,6 +45,8 @@ class SpriteObject:
         self.shift = params['shift']
         self.scale = params['scale']
         self.not_fake = params['not_fake']
+        self.type = params['type']
+        self.is_dead = params['is_dead']
         self.side = 30
         self.x, self.y = pos[0] * TILE, pos[1] * TILE
 
@@ -59,7 +67,7 @@ class SpriteObject:
         fake_walls = fake_walls0 + walls + fake_walls1
 
         dx, dy = self.x - player.x, self.y - player.y
-        distance_to_sprite = math.sqrt(dx ** 2 + dy ** 2)
+        self.distance_to_sprite = math.sqrt(dx ** 2 + dy ** 2)
 
         self.theta = math.atan2(dy, dx)
         gamma = self.theta - player.angle
