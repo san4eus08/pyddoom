@@ -42,3 +42,12 @@ class Interact:
         self.player = player
         self.sprites = sprites
 
+    def npc_action(self):
+        for obj in self.sprites.list_of_objects:
+            if obj.type == 'npc' and not obj.is_dead:
+                if ray_casting_npc(obj.x, obj.y, world_map, self.player.pos):
+                    obj.is_active = True
+                else:
+                    obj.is_active = False
+
+
