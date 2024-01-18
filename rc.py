@@ -21,7 +21,7 @@ def ray_casting(player_pos, player_angle, world_map):
         sin_a = sin_a if sin_a else 0.000001
         cos_a = cos_a if cos_a else 0.000001
 
-        # verticals
+        # пересечение с вертикалями
         x, dx = (xm + TILE, 1) if cos_a >= 0 else (xm, -1)
         for i in range(0, WORLD_WIDTH, TILE):
             depth_v = (x - ox) / cos_a
@@ -32,7 +32,7 @@ def ray_casting(player_pos, player_angle, world_map):
                 break
             x += dx * TILE
 
-        # horizontals
+        # пересечения с горизонталями
         y, dy = (ym + TILE, 1) if sin_a >= 0 else (ym, -1)
         for i in range(0, WORLD_HEIGHT, TILE):
             depth_h = (y - oy) / sin_a
@@ -43,7 +43,7 @@ def ray_casting(player_pos, player_angle, world_map):
                 break
             y += dy * TILE
 
-        # projection
+        # проекция
         depth, offset, texture = (depth_v, yv, texture_v) if depth_v < depth_h else (depth_h, xh, texture_h)
         offset = int(offset) % TILE
         depth *= math.cos(player_angle - cur_angle)
