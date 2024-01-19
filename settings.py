@@ -4,7 +4,6 @@ import pygame
 from numba.core import types
 from numba.typed import Dict
 from numba import int32
-#from main import current_level
 
 WIDTH = 1500
 HEIGHT = 843
@@ -37,11 +36,6 @@ TEXTURE_SCALE = WIDTH // TILE
 DOUBLE_PI = math.pi * 2
 CENTER_RAY = NRAYS // 2 - 1
 FAKE_RAYS = 100
-
-# настройки игрока
-player_pos = (WIDTH//2, HEIGHT//2)
-player_angle = 0
-player_speed = 3
 
 # цвета(чтобы заного каждый раз не печатать)
 WHITE = (255, 255, 255)
@@ -107,10 +101,18 @@ mega_text_map = [
 ]
 ]
 
-text_map = mega_text_map[0]
+with open('kills.txt', 'r') as file:
+    kills_count = int(file.read())
+
+text_map = mega_text_map[kills_count % 4]
 
 WORLD_WIDTH = len(text_map[0]) * TILE
 WORLD_HEIGHT = len(text_map) * TILE
+
+# настройки игрока
+player_pos = (WORLD_WIDTH//2, WORLD_HEIGHT//2)
+player_angle = 0
+player_speed = 3
 
 # Урааа коллизия
 collision_walls = []

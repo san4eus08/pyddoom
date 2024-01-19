@@ -29,7 +29,11 @@ class Sprites:
             }
         }
         self.list_of_objects = [
-            SpriteObject(self.sprites_params['monster'], (6, 6)),
+            SpriteObject(self.sprites_params['monster'], (3, 4)),
+            SpriteObject(self.sprites_params['monster'], (9, 9)),
+            SpriteObject(self.sprites_params['monster'], (4, 10)),
+            SpriteObject(self.sprites_params['monster'], (9, 4)),
+            SpriteObject(self.sprites_params['monster'], (5, 5)),
             SpriteObject(self.sprites_params['light'], (9, 8))
         ]
 

@@ -41,7 +41,7 @@ class Interact:
     def __init__(self, player, sprites):
         self.player = player
         self.sprites = sprites
-        #self.death_sound = pygame.mixer.Sound('')
+        self.death_sound = pygame.mixer.Sound('Data/death.mp3')
 
     def shooting(self, is_shooting):
         if is_shooting:
@@ -50,6 +50,7 @@ class Interact:
                     if obj.is_dead != 'None' and not obj.is_dead:
                         if ray_casting_npc(obj.x, obj.y, world_map, self.player.pos):
                             obj.is_dead = True
+                            self.death_sound.play()
 
 
     def npc_action(self):

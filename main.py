@@ -7,30 +7,24 @@ import os
 import pygame
 
 from settings import *
+from settings import FPS
 from player import Player, Weapon
 from sprites import *
 from rc import *
 from interact import *
 
 
-current_level = 0
-
-
 def start_screen():
     font = pygame.font.SysFont("Verdana", 250)
     fon = pygame.transform.scale(load_image('lobby.jpg'), (WIDTH, HEIGHT))
     screen.blit(fon, (0, 0))
-    button = get_component_button(WIDTH // 2, HEIGHT // 2 - 100, 'ИГРАТЬ')
-    button1 = get_component_button(WIDTH // 2, HEIGHT // 2 - 30, 'УРОВНИ')
-    button2 = get_component_button(WIDTH // 2, HEIGHT // 2 + 40, 'ДОСТИЖЕНИЯ')
-    button3 = get_component_button(WIDTH // 2, HEIGHT // 2 + 110, 'НАСТРОЙКИ')
-    button4 = get_component_button(WIDTH // 2, HEIGHT // 2 + 180, 'ВЫЙТИ')
+    button = get_component_button(WIDTH // 2, HEIGHT // 2 - 80, 'ИГРАТЬ')
+    button2 = get_component_button(WIDTH // 2, HEIGHT // 2 - 10, 'ДОСТИЖЕНИЯ')
+    button3 = get_component_button(WIDTH // 2, HEIGHT // 2 + 60, 'НАСТРОЙКИ')
+    button4 = get_component_button(WIDTH // 2, HEIGHT // 2 + 130, 'ВЫЙТИ')
     color = (162, 65, 47)
     pygame.draw.rect(screen, color, button[2])
     screen.blit(button[0], button[1])
-
-    pygame.draw.rect(screen, color, button1[2])
-    screen.blit(button1[0], button1[1])
 
     pygame.draw.rect(screen, color, button2[2])
     screen.blit(button2[0], button2[1])
@@ -53,9 +47,6 @@ def start_screen():
                     if button[2].collidepoint(mouse_pos):
                         main()
                         return
-                    if button1[2].collidepoint(mouse_pos):
-                        levels()
-                        return
                     if button2[2].collidepoint(mouse_pos):
                         achievements()
                         return
@@ -68,6 +59,7 @@ def start_screen():
 
 
 def sattings():
+    global FPS
     font = pygame.font.SysFont("Verdana", 50)
     button1 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2 - 100, '<МАКС FPS>')
     button3 = get_component_button(WIDTH // 2 - 150, HEIGHT // 2, '<ЗВУК>')
@@ -87,7 +79,7 @@ def sattings():
         pygame.draw.rect(screen, color, button4[2])
         screen.blit(button4[0], button4[1])
 
-        fps = font.render(f'{settings.FPS}', True, (255, 255, 255))
+        fps = font.render(f'{FPS}', True, (255, 255, 255))
         screen.blit(fps, (button1[2].x + 360, button1[2].y))
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
@@ -99,10 +91,10 @@ def sattings():
                 if e.button == 1:
                     mouse_pos = pygame.mouse.get_pos()
                     if button1[3].collidepoint(mouse_pos):
-                        if settings.FPS > 15:
-                            settings.FPS -= 15
+                        if FPS > 15:
+                            FPS -= 15
                     if button1[4].collidepoint(mouse_pos):
-                        settings.FPS += 15
+                        FPS += 15
                     if button4[2].collidepoint(mouse_pos):
                         start_screen()
                         return
@@ -141,56 +133,6 @@ def pause():
                         start_screen()
                         return
         pygame.display.flip()
-
-
-def levels():
-    fon = pygame.transform.scale(load_image('levels.jpg'), (WIDTH, HEIGHT))
-    screen.blit(fon, (0, 0))
-    button = get_component_button(WIDTH // 4, HEIGHT // 2 - 100, '', 200, 200)
-    button1 = get_component_button(WIDTH // 2 - 100, HEIGHT // 2 - 100, '', 200, 200)
-    button2 = get_component_button(WIDTH // 4, HEIGHT // 2 + 150, '', 200, 200)
-    button3 = get_component_button(WIDTH // 2 - 100, HEIGHT // 2 + 150, '', 200, 200)
-    button4 = get_component_button(WIDTH // 2 + 250, HEIGHT // 2 + 25, '', 300, 300)
-    button5 = get_component_button(10, 10, '', 50, 50)
-    color = (162, 65, 47)
-    pygame.draw.rect(screen, color, button[2])
-    screen.blit(button[0], button[1])
-
-    pygame.draw.rect(screen, color, button1[2])
-    screen.blit(button1[0], button1[1])
-
-    pygame.draw.rect(screen, color, button2[2])
-    screen.blit(button2[0], button2[1])
-
-    pygame.draw.rect(screen, color, button3[2])
-    screen.blit(button3[0], button3[1])
-
-    pygame.draw.rect(screen, color, button4[2])
-    screen.blit(button4[0], button4[1])
-
-    pygame.draw.rect(screen, color, button5[2])
-    pygame.draw.line(screen, (255, 204, 0), (button5[2].x, button5[2].y), (button5[2].x + button5[2].w,
-                                                                           button5[2].y + button5[2].h))
-    pygame.draw.line(screen, (255, 204, 0), (button5[2].x + button5[2].w, button5[2].y), (button5[2].x,
-                                                                                          button5[2].y + button5[2].h))
-    screen.blit(button5[0], button5[1])
-    while True:
-        for e in pygame.event.get():
-            if e.type == pygame.QUIT:
-                pygame.quit()
-            elif e.type == pygame.MOUSEBUTTONDOWN:
-                if e.button == 1:
-                    mouse_pos = pygame.mouse.get_pos()
-                    if button[2].collidepoint(mouse_pos):
-                        pass
-                    if button1[2].collidepoint(mouse_pos):
-                        pass
-                    if button2[2].collidepoint(mouse_pos):
-                        pass
-                    if button5[2].collidepoint(mouse_pos):
-                        start_screen()
-                        return
-            pygame.display.flip()
 
 
 def defeat():
