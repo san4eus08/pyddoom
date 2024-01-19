@@ -103,6 +103,7 @@ mega_text_map = [
 
 with open('kills.txt', 'r') as file:
     kills_count = int(file.read())
+print(kills_count)
 
 text_map = mega_text_map[kills_count % 4]
 

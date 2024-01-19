@@ -318,7 +318,6 @@ def main():
         npc_check(sprites.list_of_objects, kills_count)
 
         clock.tick(FPS)
-        print(clock.get_fps())
 
         # pygame.draw.circle(screen, GREEN, (int(player.x), int(player.y)), 10)
         # pygame.draw.line(screen, RED, player.pos, (player.x + WIDTH * math.cos(plНayer.angle),
